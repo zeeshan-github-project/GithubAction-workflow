@@ -40,8 +40,8 @@ jobs:
       - name: Docker build and push
         run: |
           # Run commands to build and push Docker images
-          docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/tic-tac-toe:latest
-          docker rmi tic-tac-toe:latest
+          # docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/tic-tac-toe:latest
+          # docker rmi tic-tac-toe:latest
           docker build -t tic-tac-toe .
           docker tag tic-tac-toe ${{ secrets.DOCKERHUB_USERNAME }}/tic-tac-toe:latest
           docker image ls
