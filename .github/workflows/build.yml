@@ -50,4 +50,4 @@ jobs:
           DOCKER_CLI_ACI: 1
 
       - name: Trivy image scan
-        run: trivy image zeeshan30/tic-tac-toe:latest # Add Trivy scan command here
+        run: trivy image zeeshan30/tic-tac-toe:latest > trivyimage.txt # Add Trivy scan command here
