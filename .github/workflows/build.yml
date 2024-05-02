@@ -48,3 +48,6 @@ jobs:
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/tic-tac-toe:latest
         env:
           DOCKER_CLI_ACI: 1
+
+      - name: Trivy image scan
+        run: trivy image zeeshan30/tic-tac-toe:latest # Add Trivy scan command here
