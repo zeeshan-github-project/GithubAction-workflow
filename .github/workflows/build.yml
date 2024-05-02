@@ -82,17 +82,14 @@
 #           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 
-name: Destroy Workflow
+name: Build,Analyze,scan
 on:
   push:
     branches:
       - main
 jobs:
-  destroy:
-    needs:
-      - Build,Analyze,scan
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    name: Destroy
+  build-analyze-scan:
+    name: Build
     runs-on: [self-hosted]
     steps:
       - name: Checkout code
@@ -104,7 +101,7 @@ jobs:
           docker stop game
           docker rm game
       - name: Update kubeconfig
-        run: aws eks --region us-east-2 update-kubeconfig --name EKS_CLOUD
+        run: aws eks --region ap-south-1 update-kubeconfig --name EKS_CLOUD
       - name: Deploy to kubernetes
         run: kubectl delete -f deployment-service.yml
       - name: Send a Slack Notification
