@@ -27,14 +27,24 @@ jobs:
         run: |
           # Scanning files
           trivy fs . > trivyfs.txt 
+          
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
       - name: Docker build and push
         run: |
           # Run commands to build and push Docker images
+          docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/tic-tac-toe:latest
+          docker rmi tic-tac-toe:latest
           docker build -t tic-tac-toe .
-          docker tag tic-tac-toe zeeeshan30/tic-tac-toe:latest
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker tag tic-tac-toe ${{ secrets.DOCKERHUB_USERNAME }}/tic-tac-toe:latest
           docker image ls
-          docker push zeeshan30/tic-tac-toe:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/tic-tac-toe:latest
         env:
           DOCKER_CLI_ACI: 1
