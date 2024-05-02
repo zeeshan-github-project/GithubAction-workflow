@@ -51,3 +51,16 @@ jobs:
 
       - name: Trivy image scan
         run: trivy image zeeshan30/tic-tac-toe:latest > trivyimage.txt # Add Trivy scan command here
+
+  deploy:
+   needs: build-analyze-scan   
+   runs-on: [self-hosted]
+   steps:
+      - name: docker pull image
+        run: docker pull zeeshan30/tic-tac-toe:latest
+
+      - name: Image scan
+        run: trivy image sevenajay/tic-tac-toe:latest > trivyimagedeploy.txt  
+  
+      - name: Deploy to container
+        run: docker run -d --name game -p 3000:3000 zeeshan30/tic-tac-toe:latest
